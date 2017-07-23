@@ -11,7 +11,7 @@ För att kunna använda skriptet behöver du installera AutoHotKey på din dator
 
 Starta skriptet genom att dubbelklicka på det. Lägg skriptet eller en genväg till det på Skrivbordet för att ha snabb tillgång till det, eller schemalägg det så att det startar tillsammans med datorn om du alltid vill ha det igång. Att skriptet är igång märks inte på annat vis än att en grön fyrkantig ikon med ett vitt H visar sig i Windows Taskbar (längst nere till höger); det är vad som krävs för att snabbkommandot Ctrl+K nu ska utföra sitt jobb i Disgens fönster för källor, hänvisningar och ort.
 
-(Det finns även möjlighet att kompilera dgHelper till en fristående exe-fil, men jag avhåller mig från att distribuera en sådan, då jag vill att ni som använder skriptet ska kunna öppna källkoden och titta exakt vad programmet gör.)
+(Det finns även möjlighet att kompilera dgHelper till en fristående exe-fil, men jag avhåller mig från att distribuera en sådan, då jag vill att ni som använder skriptet ska kunna öppna källkoden och undersöka den. En okänd exe-fil kan göra vad som helst!)
 
 Användande av dgHelper.ahk
 ==========================
