@@ -40,10 +40,10 @@ Istället för att bara kopiera källhänvisningen direkt från Arkiv Digital ka
 
 Exempel på vad som kan kopieras och tas omhand av dgHelper
 ----------------------------------------------------------
-Ås (P) C:5 (1801-1841) Bild 1 / sid 4 (AID: v706.b1.s4, NAD: SE/GLA/130)
-18381221
-[Död] 2. [Begr] 9. Enkl. Jonas Jonasson på KlippeSvedjorna under Lidagärde. Ålderdom. 78 [år] 8 m. n.d.
-[Vid sin död boende med sonen Per Jonsson och dennes familj, på torpet Klippesvedjorna]
+> Ås (P) C:5 (1801-1841) Bild 1 / sid 4 (AID: v706.b1.s4, NAD: SE/GLA/130)<br />
+> 18381221<br />
+> [Död] 2. [Begr] 9. Enkl. Jonas Jonasson på KlippeSvedjorna under Lidagärde. Ålderdom. 78 [år] 8 m. n.d.<br />
+> [Vid sin död boende med sonen Per Jonsson och dennes familj, på torpet Klippesvedjorna]<br />
 
 *Rad 1 används som källa, rad 2 läggs in som datum (om raden består av exakt 8 siffror), rad 3 och därpå följande rader hamnar som citattext i Disgens källhänvisning.*
 
