@@ -1,7 +1,7 @@
 # dgHelper
 Beskrivning
 ===========
-DgHelper är ett AutoHotKey-skript som underlättar vid inmatning i det svenska släktforskningsprogrammet Disgen 8.2. Med ett tangentbords-snabbkommando (ctrl+k) delas en Källhänvisning, kopierad från ArkivDigital, upp i sina beståndsdelar såsom sidnummer, AID, eventuell egen citattext, och kopieras till respektive fält i Disgens fönster för Källa eller Hänvisning, med en knapptryckning. Skriptet innehåller även en rutin för uppdelning och inmatning av kopierade koordinater för ort.
+DgHelper är ett AutoHotKey-skript som underlättar vid inmatning i det svenska släktforskningsprogrammet Disgen 8.2. Med ett tangentbords-snabbkommando (ctrl+k) delas en Källhänvisning, kopierad från ArkivDigital, upp i sina beståndsdelar såsom sidnummer, AID, eventuell egen citattext med mera, och kopieras till respektive fält i Disgens fönster för Källa eller Hänvisning, med en knapptryckning. Skriptet innehåller även en rutin för uppdelning och inmatning av kopierade koordinater för ort.
 
 Skriptet är utvecklat för Windows och Disgen ver 8.2d.
 
@@ -36,6 +36,14 @@ Skriv på följande rader av texten från Arkiv Digital. Detta blir citat-texten
 
 Istället för att bara kopiera källhänvisningen direkt från Arkiv Digital kan texten alltså kopieras från ett valfritt program. Markera hela texten i Anteckningar och tryck Ctrl+C (för Kopiera / Copy). Tryck sedan Ctrl+k för att ta in hänvisning inkl citat och ev. datum i öppen hänvisningsruta i Disgen, enligt ovan.
 
+Exempel på vad som kan kopieras och tas omhand av dgHelper
+----------------------------------------------------------
+Ås (P) C:5 (1801-1841) Bild 1 / sid 4 (AID: v706.b1.s4, NAD: SE/GLA/130)
+18381221
+[Död] 2. [Begr] 9. Enkl. Jonas Jonasson på KlippeSvedjorna under Lidagärde. Ålderdom. 78 [år] 8 m. n.d.
+[Vid sin död boende med sonen Per Jonsson och dennes familj, på torpet Klippesvedjorna]
+
+*Rad 1 används som källa, rad 2 läggs in som datum (om raden består av exakt 8 siffror), rad 3 och därpå följande rader hamnar som citattext i Disgens källhänvisning.*
 
 Koordinater (ort)
 =================
@@ -70,6 +78,5 @@ Kända buggar
 Datumet (från rad 2 i kopierad källtext, om sådan finns) kopieras ibland in med en förskjutning om ett tecken, till datumrutan i Disgens hänvisning. Kontrollera alltså alltid att datum hamnar rätt – datumet blir emellertid så felaktigt att Disgen inte accepterar det, varför ingen nämnvärd risk föreligger att det ska sparas något felaktigt.
 
 
-
 Andreas Jansson
-Öna, Tärby d. 23/7 2017
+Ön Tärby den 23/7 2017
