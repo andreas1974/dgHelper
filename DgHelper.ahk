@@ -1,5 +1,5 @@
-﻿; DgHelper ver 1.00
-; Andreas Jansson - skriv e-post till mig genom att sätta punkter mellan mina namn + snabel-a home punkt se eller leta upp mig på Dis Forum eller Facebook (t.ex. gruppen "Vi som gillar Disgen").
+; DgHelper ver 1.01
+; Andreas Jansson - skriv e-post till mig genom att sätta punkter mellan mina namn + snabel-a home punkt se eller leta upp mig på Dis Forum eller Facebook (t.ex. gruppen "Jag gillar Disgen").
 ; Licens enligt separat textfil (GNU General Public License v3.0)
 
 #IfWinActive, ahk_class TSourceEditTreeDlg ; pressing ctrl+k inside the dialogue "Redigera källträdet" of Disgen.
@@ -10,7 +10,8 @@
 
 ; Om man trycker ctrl+k i rutan "Redigera Ort" klistras eventuella koordinater (RT90) som man har kopierat in i koordinatrutorna.
 ; Koordinaterna man kopierat måste vara på formatet X, Y, d.v.s. "6431385, 1265325" eller med decimaler (som tas bort): "6431385.492, 1265325.867"
-#IfWinActive, ahk_class TDiaPlaceEdit
+; Rutan för Redigera ort heter TPlaceEditdlg i Disgen 2016 men TDiaPlaceEdit i Disgen 8.2d. Vi går därför på det utskrivna namnet Redigera ort istället, eftersom det är detsamma.
+#IfWinActive, Redigera ort
 ^k::
 if (Clipboard <> "" AND	IsNumeric(SubStr(Clipboard, 1, 7)) ) {
 	; MsgBox, 1 %Clipboard%
