@@ -5,6 +5,8 @@ DgHelper är ett AutoHotKey-skript som underlättar vid inmatning i det svenska 
 
 Skriptet är utvecklat för Windows och Disgen ver 8.2d.
 
+Stumfilm som visar hur skriptet fungerar: https://www.facebook.com/andreas.jansson.5817/videos/1420301858055503
+
 Förberedelser
 =============
 För att kunna använda skriptet behöver du installera AutoHotKey på din dator. Välj "Download AutoHotkey Installer" och installera (ver. 1.1.x) från  https://autohotkey.com/. Läs gärna på om AutoHotKey på externa webbplatser, för att bilda er en egen uppfattning om programmet som "kör" automatiseringsskriptet!
@@ -31,7 +33,7 @@ Resultat: Prefix p (pagina) väljs om sidnummer finns. Sidnummer läggs in i fä
 
 Utökat användningsområde vid transkribering (hänvisning inkl citat)
 -------------------------------------------------------------------
-Vid transkribering av text från Arkiv Digital, till källor, kan ett enkelt program såsom Anteckningar / Notepad rekommenderas som "mellanprogram", i synnerhet om du inte har en mycket bred bildskärm (eller två stycken). Öppna "Anteckningar" och förminska dess fönster det så att det tar upp en lämplig del av skärmytan, t.ex. nedre fjärdedelen.
+Vid transkribering av text från Arkiv Digital, till källor, kan ett enkelt program såsom Anteckningar / Notepad rekommenderas som "mellanprogram", i synnerhet om du inte har en mycket bred bildskärm (eller två stycken). Öppna "Anteckningar" och förminska dess fönster det så att det tar upp en lämplig del av skärmytan, t.ex. nedre tredjedelen.
 Kopiera Arkiv Digitals källa och lägg på rad 1 i Anteckningar.
 Om det är en födelse eller vigselnotis som skrivs av finns det ofta ett exakt datum. Skriv in datumet på rad 2. Formatet ska vara ÅÅÅÅMMDD (inga bindestreck eller andra tecken, endast 8 siffror, nollor om dag eller månad saknas).
 Skriv på följande rader av texten från Arkiv Digital. Detta blir citat-texten som hamnar som "Citat" i hänvisningen när du senare trycker Ctrl+k enligt beskrivningen "Ny hänvisning" ovan. Om exakt datum saknas lägger du citatet med början på rad 2.
