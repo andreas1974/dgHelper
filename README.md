@@ -31,7 +31,7 @@ Resultat: Prefix p (pagina) väljs om sidnummer finns. Sidnummer läggs in i fä
 
 Utökat användningsområde vid transkribering (hänvisning inkl citat)
 -------------------------------------------------------------------
-Vid transkribering av text från Arkiv Digital, till källor, kan ett enkelt program såsom Anteckningar / Notepad rekommenderas som "mellanprogram", i synnerhet om du inte har en mycket bred bildskärm eller 2 st. Öppna "Anteckningar" och förminska dess fönster det så att det tar upp en lämplig del av skärmytan, t.ex. nedre fjärdedelen.
+Vid transkribering av text från Arkiv Digital, till källor, kan ett enkelt program såsom Anteckningar / Notepad rekommenderas som "mellanprogram", i synnerhet om du inte har en mycket bred bildskärm (eller två stycken). Öppna "Anteckningar" och förminska dess fönster det så att det tar upp en lämplig del av skärmytan, t.ex. nedre fjärdedelen.
 Kopiera Arkiv Digitals källa och lägg på rad 1 i Anteckningar.
 Om det är en födelse eller vigselnotis som skrivs av finns det ofta ett exakt datum. Skriv in datumet på rad 2. Formatet ska vara ÅÅÅÅMMDD (inga bindestreck eller andra tecken, endast 8 siffror, nollor om dag eller månad saknas).
 Skriv på följande rader av texten från Arkiv Digital. Detta blir citat-texten som hamnar som "Citat" i hänvisningen när du senare trycker Ctrl+k enligt beskrivningen "Ny hänvisning" ovan. Om exakt datum saknas lägger du citatet med början på rad 2.
@@ -62,16 +62,16 @@ Resultat: Koordinaterna från den kopierade texten delas upp och placeras i X re
 
 Specialinställningar
 ====================
-På grund av att Arkiv Digital i sin webbversion har lagt till länsbokstaven som del av källhänvisningen, ställer det till det i sorteringsordningen i källträdet – de med länsbokstav hamnar före de gamla. Exempelvis hamnar ...
-Od (P) AI:5
-... FÖRE de tidigare inmatade, äldre, böckerna ...
-Od AI:1
-Od AI:3
-Od AI:4
-Skriptet tar i sitt originalutförande bort länsbokstaven och dess omslutande parenteser, för att skapa "Kort titel" för källan. Om du inte har många gamla källor och dessutom endast arbetar med den webb-baserade versionen av ArkivDigital (den som körs i webbläsare t.ex. Chrome), så att du ALLTID får med länsbokstaven i de källor du kopierar (den kommer inte med från den äldre versionen av Arkiv Digital Online – den som installeras och körs lokalt på din dator) kan det möjligen ligga en poäng i att behålla länsbokstaven i källan(?). Du kan enkelt stänga av avlägsnandet av Länsbokstav genom att öppna dhHelper.ahk i Anteckningar och ändra raden ...
-RemoveLänsbokstav := true
-... till ... 
-RemoveLänsbokstav := false
+På grund av att Arkiv Digital i sin webbversion har lagt till länsbokstaven som del av källhänvisningen, ställer det till det i sorteringsordningen i källträdet – de med länsbokstav hamnar före de gamla. Exempelvis hamnar ...<br />
+Od (P) AI:5<br />
+... FÖRE de tidigare inmatade, äldre, böckerna ...<br />
+Od AI:1<br />
+Od AI:3<br />
+Od AI:4<br />
+Skriptet tar i sitt originalutförande bort länsbokstaven och dess omslutande parenteser, för att skapa "Kort titel" för källan. Om du inte har många gamla källor och dessutom endast arbetar med den webb-baserade versionen av ArkivDigital (den som körs i webbläsare t.ex. Chrome), så att du ALLTID får med länsbokstaven i de källor du kopierar (den kommer inte med från den äldre versionen av Arkiv Digital Online – den som installeras och körs lokalt på din dator) kan det möjligen ligga en poäng i att behålla länsbokstaven i källan(?). Du kan enkelt stänga av avlägsnandet av Länsbokstav genom att öppna dhHelper.ahk i Anteckningar och ändra raden ...<br />
+RemoveLänsbokstav := true<br />
+... till ... <br />
+RemoveLänsbokstav := false<br />
 
 Ctrl+k aktiverar inmatningsskriptet för källor och källhänvisningar även från ArkivDigital och Notepad samt Notepad++. Det räcker alltså att kopiera källhänvisningen och trycka ctrl+k i ArkivDigital för att skriptet ska växla över till Disgen och  kopiera in uppgifterna till den ruta som är aktiv där ("Egenskaper för källhänvisning" eller "Egenskaper för källa"). Observera dock att rutan för källa el. källhänvisning måste vara öppen i Disgen för att något ska hända när du trycker ctrl+k i de övriga programmen.
 
@@ -80,5 +80,8 @@ Kända buggar
 Datumet (från rad 2 i kopierad källtext, om sådan finns) kopieras ibland in med en förskjutning om ett tecken, till datumrutan i Disgens hänvisning. Kontrollera alltså alltid att datum hamnar rätt – datumet blir emellertid så felaktigt att Disgen inte accepterar det, varför ingen nämnvärd risk föreligger att det ska sparas något felaktigt.
 
 
-Andreas Jansson
-Ön Tärby den 23/7 2017
+Upphov / kontakt
+================
+Andreas Jansson<br />
+Ön Tärby den 23/7 2017<br />
+Ni kan kontakta mig genom att skriva e-post: Sätt punkter mellan mina namn + snabel-a home punkt se eller leta upp mig på Dis Forum eller Facebook (t.ex. gruppen "Vi som gillar Disgen"). GitHub kanske också har kontakt-uppgifter.
