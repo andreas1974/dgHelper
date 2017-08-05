@@ -1,4 +1,4 @@
-; DgHelper ver 1.01
+; DgHelper ver 1.02
 ; Andreas Jansson - skriv e-post till mig genom att sätta punkter mellan mina namn + snabel-a home punkt se eller leta upp mig på Dis Forum eller Facebook (t.ex. gruppen "Jag gillar Disgen").
 ; Licens enligt separat textfil (GNU General Public License v3.0)
 
@@ -118,7 +118,7 @@ if (FullSourceText <> "" AND InStr(FullSourceText, "AID:") )
 	}
 	
 	; Parse the source line into its different parts.
-	FoundPos := RegExMatch(sourceLine, "AID:(.*),", aid)
+	FoundPos := RegExMatch(sourceLine, "AID: (.*),", aid)
 	
 	FoundPos := RegExMatch(sourceLine, "^(.*?) (\(?\w?\w?\)?) ?\((\d\d\d\d-\d\d\d\d)\)", mainSource) ; Sockennamn, ev. Länsbokstav, Årtal.
 	sourceShortName := mainSource1 ; For unknown reason AutoHotKey regex put the LÄNSBOKSTAV such as (R) along with the place name in capture group 1, instead of getting it into Capture group 2 like other toos do.
