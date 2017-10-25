@@ -1,7 +1,7 @@
 # dgHelper
 Beskrivning
 ===========
-DgHelper är ett AutoHotKey-skript som underlättar vid inmatning i det svenska släktforskningsprogrammet Disgen 8.2. Med ett tangentbords-snabbkommando (ctrl+k) delas en Källhänvisning, kopierad från ArkivDigital, upp i sina beståndsdelar såsom sidnummer, AID, eventuell egen citattext med mera, och kopieras till respektive fält i Disgens fönster för Källa eller Hänvisning, med en knapptryckning. Skriptet innehåller även en rutin för uppdelning och inmatning av kopierade koordinater för ort.
+DgHelper är ett AutoHotKey-skript som underlättar vid inmatning i det svenska släktforskningsprogrammet Disgen 8.2. Med ett tangentbords-snabbkommando (ctrl+k) delas en Källhänvisning, kopierad från ArkivDigital, upp i sina beståndsdelar såsom sidnummer, AID, eventuell egen citattext med mera, och kopieras till respektive fält i Disgens fönster för Källa eller Hänvisning. Skriptet innehåller även en rutin för uppdelning och inmatning av kopierade koordinater för ort.
 
 Skriptet är utvecklat för Disgen 8.2 men synes fungera även i 2016, då de flesta av inmatningsrutorna för källor och orter är snarlika och heter samma sak i de två versionerna av programmet. Mina få tester (i utgånget och begränsat demo-läge) visar på att skriptet även fungerar i Disgen 2016. <br />
 Källorna kan kopieras antingen från Arkiv Digitals klientprogram (gamla "ArkivDigital Online") eller från deras nyare webbversion http://app.arkivdigital.se/.
