@@ -1,4 +1,4 @@
-; DgHelper ver 1.02
+; DgHelper ver 1.03
 ; Andreas Jansson - skriv e-post till mig genom att sätta punkter mellan mina namn + snabel-a home punkt se eller leta upp mig på Dis Forum eller Facebook (t.ex. gruppen "Jag gillar Disgen").
 ; Licens enligt separat textfil (GNU General Public License v3.0)
 
@@ -147,10 +147,15 @@ if (FullSourceText <> "" AND InStr(FullSourceText, "AID:") )
 			ControlSetText, TEdit2, %refPageNumber1%, Egenskaper för källhänvisning	; Hänvisningstext (Sidnummer). Regex-matchgrupp 1 från refPageNumber.
 		}
 		;Kvalitet: 		TComboBox2
-		if (refSourceDate)
+		if (refSourceDate){
 			ControlSend, TComboBox2, {PGUP}{DOWN}, Egenskaper för källhänvisning ; Ställ valet primär källa
-		;msgbox, %refSourceDate%
-		ControlSend, TDisFullDate1, %refSourceDate%, Egenskaper för källhänvisning
+			; msgbox, %refSourceDate%
+			; ControlSend, TDisFullDate1, %refSourceDate%, Egenskaper för källhänvisning
+			; Sätt fokus till datumkontrollen
+			ControlFocus, TDisFullDate1
+			ControlSetDisDate(refSourceDate)
+		}
+		
 		ControlGet, OutputVar, Choice, , TComboBox1
 		if (OutputVar <> "ArkivDigital")
 			ControlSend, TComboBox1, {PGUP}{DOWN}, Egenskaper för källhänvisning ; Ställ valet "Koppla till" på andra valet i listan (Arkiv Digital)
@@ -173,6 +178,15 @@ if (FullSourceText <> "" AND InStr(FullSourceText, "AID:") )
 
 } else {
 	MsgBox, 64, Kopiera källa, Giltig källhänvisningstext saknas i urklippshanteraren.`r`n`r`nDetta AutoHotKey-skript är avsett för att kopiera och dela upp en källhänvisning från Arkiv Digital till en NY hällhänvisning i Disgen. Välj Kopiera källa i ArkivDigtal och tryck sedan åter på snabbkommandot för att aktivera detta skript.%HelpTextWithSample%
+}
+
+
+ControlSetDisDate(dateString) {
+	Loop, Parse, dateString
+	{
+		; Skicka in en siffra i taget till datumkontrollen. Annars hamnar siffrorna ofta fel, med fÃ¶rskjutning (om man inte visar en MsgBox just innan datumet skickas in med ControlSend).
+		SendInput %A_LoopField%
+	}
 }
 
 ; Problematiskt att använda IS NUMBER tillsammans med andra villkor. Det rekommenderas att man "wrappar" "If var IS [NOT] <type>" i en function, som nedan.
