@@ -1,5 +1,11 @@
-; DgHelper ver 1.04
-; Andreas Jansson - skriv e-post till mig genom att sätta punkter mellan mina namn + snabel-a home punkt se eller leta upp mig på Dis Forum eller Facebook (t.ex. gruppen "Jag gillar Disgen").
+; DgHelper ver 1.05
+; Ett hjälpverktyg för Disgen 8.2. Det mesta ska fungera även i senare versioner av Disgen, dock troligen inte inklistringen av namn och datum i personvyn, eftersom det gränssnittet är mycket förändrat i senare versioner av Disgen.
+; Ver 1.05 har stöd för Disgen 2021 (men för att nå in i rutan för att mata in AID DISGEN-länk) lät jag skriptet flytta muspekaren och utföra klick på positioner som stämmer på min dators upplösning. Det är ingen bra lösning, men fungerar förhoppningsvis för de flesta.
+; Även småsaker som hjälper till i andra program: Vid inklistring i datumfälten i SverigesDödbok (med Ctrl+V) tas eventuella bindestreck bort från datumet i urklipp, så att det blir som programmet vill ha det.
+; Av Andreas Jansson - om ni har kommentarer på koden kan ni öppna en "issue" eller "request" på github. Jag tror det resulterar i ett mejl till en e-postadress som jag kollar ofta.
+; Eller leta i andra hand upp mig på Dis Forum eller Facebook (jag har skrivit om skriptet i bl.a. gruppen "Jag gillar Disgen"). Min Facebookanvändare är andreas.jansson.5817
+; Skriv i tredje hand e-post till mig genom att sätta punkter mellan mina namn + snabel-a home punkt se (den rebusen leder till en e-postadress till en adress som jag kollar var eller varannan vecka; min primära adress uppger jag inte här, med tanke på skräppostrisken).
+; Koden finns publicerad på https://github.com/andreas1974/dgHelper
 ; Licens enligt separat textfil (GNU General Public License v3.0)
 
 #IfWinActive, ahk_class TSourceEditTreeDlg ; pressing ctrl+k inside the dialogue "Redigera källträdet" of Disgen.
@@ -132,54 +138,274 @@ if (FullSourceText <> "" AND InStr(FullSourceText, "AID:") )
 	sourceYears := mainSource3
 	FoundPos := RegExMatch(sourceLine, "sid (\d*)", refPageNumber)	; Hänvisningens sidnummer
 	FoundPos := RegExMatch(sourceLine, "Bild (\d*)", refADImageNumber)	; ArkivDigitals bildnummer, att använda istället för sidnummer om sidnummer saknas i källan.
-		
+	
 	; Leta efter Disgens ruta för källhänvisning, för att där kopiera in värdena vi extraherat.
-	IfWinExist, ahk_class TSourceRefPropDlg ; Fönstret "Egenskaper för källhänvisning"
+	IfWinExist, Egenskaper för källhänvisning
 	{
-		WinActivate, ahk_class TSourceRefPropDlg ; Datumet hamnar inte rätt om vi inte säkerställer att fönstet är aktivt. Ibland kommer datumet ändå in med en förskjutning på en siffra; oklart varför eller när det händer.
-		;WinWaitActive, ahk_class TSourceRefPropDlg, , 2
-		WinWait, ahk_class TSourceRefPropDlg
-		if (refPageNumber = "") {
-			ControlSend, TComboBox3, {PGUP}, ahk_class TSourceRefPropDlg ; Ställ valet "Prefix" på översta valet (inget) listan, när källan saknar sidnummer. Vi skriver då in "AD: " (ArkivDigital) i sidhänvigningen istället.
-			ControlSetText, TEdit2, AD: %refADImageNumber1%, ahk_class TSourceRefPropDlg ; Hänvisningstext (Sidnummer). Regex-matchgrupp 1 från refPageNumber.
+		
+		ctrlNamePrefixCombo := ; reset dynamic control names variables
+		ctrlNameQualityCombo :=
+		ctrlNamePageNrtextBox :=
+		
+		; Ta reda på om vi befinner oss i Disgen 2021, genom att kolla om vi kan få en referens till TButton4 som inte finns i de äldre versionerna.
+		; Tilldela sedan kontrollernas namn till variabler, så att de stämmer för respektive versoin.
+		ControlGet, OutputVar, Visible,, TButton4, Egenskaper för källhänvisning
+		if ErrorLevel = 0
+		{
+			; Disgen 2021 Control names for combo lists.
+			ctrlNamePrefixCombo := "TComboBox2"
+			ctrlNameQualityCombo := "TComboBox1"
+			ctrlNamePageNrtextBox := "TEdit1"
+			; msgBox, "1"
 		} else {
-			ControlSend, TComboBox3, {PGUP}{DOWN}{DOWN}, ahk_class TSourceRefPropDlg ; Ställ valet "Prefix" på tredje valet i listan ("p" för pagina)
-			ControlSetText, TEdit2, %refPageNumber1%, ahk_class TSourceRefPropDlg ; Hänvisningstext (Sidnummer). Regex-matchgrupp 1 från refPageNumber.
+			ctrlNamePrefixCombo := "TComboBox3"
+			ctrlNameQualityCombo := "TComboBox2"
+			ctrlNamePageNrtextBox := "TEdit2"
+			; msgBox, "2"
 		}
-		;Kvalitet: 		TComboBox2
+		
+		WinActivate, Egenskaper för källhänvisning ; Datumet hamnar inte rätt om vi inte säkerställer att fönstet är aktivt. Ibland kommer datumet ändå in med en förskjutning på en siffra; oklart varför eller när det händer.
+		;WinWaitActive, Egenskaper för källhänvisning, , 2
+		WinWait, ahk_class TSourceRefPropDlg
+		; Namnet på prefix-comboboxen blev "TComboBox2" från Disgen 2021. Tidigare namn TComboBox3.
+		if (refPageNumber = "") {
+			ControlSend, %ctrlNamePrefixCombo%, {PGUP}, Egenskaper för källhänvisning ; Ställ valet "Prefix" på översta valet (inget) listan, när källan saknar sidnummer. Vi skriver då in "AD: " (ArkivDigital) i sidhänvigningen istället.
+			ControlSetText, %ctrlNamePageNrtextBox%, AD: %refADImageNumber1%, Egenskaper för källhänvisning	; Hänvisningstext (Sidnummer). Regex-matchgrupp 1 från refPageNumber.
+		} else {
+			ControlSend, %ctrlNamePrefixCombo%, {PGUP}{DOWN}{DOWN}, Egenskaper för källhänvisning ; Ställ valet "Prefix" på tredje valet i listan ("p" för pagina)
+			ControlSetText, %ctrlNamePageNrtextBox%, %refPageNumber1%, Egenskaper för källhänvisning	; Hänvisningstext (Sidnummer). Regex-matchgrupp 1 från refPageNumber.
+		}
+		;Kvalitet: 		TComboBox1 i Disgen 2021, tidigare namn i äldre Disgen = TComboBox2
 		if (refSourceDate){
-			ControlSend, TComboBox2, {PGUP}{DOWN}, ahk_class TSourceRefPropDlg ; Ställ valet primär källa
+			ControlSend, %ctrlNameQualityCombo%, {PGUP}{DOWN}, Egenskaper för källhänvisning ; Ställ valet primär källa
 			; msgbox, %refSourceDate%
-			; ControlSend, TDisFullDate1, %refSourceDate%, ahk_class TSourceRefPropDlg
+			; ControlSend, TDisFullDate1, %refSourceDate%, Egenskaper för källhänvisning
 			; Sätt fokus till datumkontrollen
 			ControlFocus, TDisFullDate1
 			ControlSetDisDate(refSourceDate)
 		}
 		
-		ControlGet, OutputVar, Choice, , TComboBox1
-		if (OutputVar <> "ArkivDigital")
-			ControlSend, TComboBox1, {PGUP}{DOWN}, ahk_class TSourceRefPropDlg ; Ställ valet "Koppla till" på andra valet i listan (Arkiv Digital)
-		ControlSetText, TEdit1, %aid1%, ahk_class TSourceRefPropDlg	; Bild-Id (Arkiv digitals AID)
+		; För det förändrade utseendet i Disgen 2021. (Svårhanterat genom AutoHotKey, och dessutom har de bytt namn på kontrollerna.)
+		; Fungerar endast vid nytillägg av hänvisning. Vid redigering ändras inte befintlig källa (det tillägg som påbörjas "klickas bort" av skriptet, eftersom det positioneras för långt ned, vilket är bra).
+		ControlGet, OutputVar, Visible,, TButton4, Egenskaper för källhänvisning
+		if ErrorLevel = 0
+		{
+			If OutputVar > 0
+			{
+				Sleep 200 ; Tycks behöva sova litet emellanåt här. Annars lyckas inte inklistringen så ofta
+				; Found it. Send a click to the "Lägg till" button (TButton4) by sending its keyboard shortcut Alt+L
+				ControlSend, TButton4, {Alt down}l{Alt up}, Egenskaper för källhänvisning
+				;Sleep 10
+				; ControlGet, OutputVar, Choice, , TGridComboBox1 ; Leta upp dropdownlistan TGridComboBox1 och returnera en referens till den i OutPutVar. Lyckas inte hantera sub-kontrollerna inne i  TGridComboBox1
+				
+				; Ta reda på positionen för TAdvStringGrid1 som är grid-kontrollen som innehåller källorna. Försök sedan att fälla ut listan på rad 1 genom positionering.
+				ControlGetPos, x, y, w, h, TAdvStringGrid1, Egenskaper för källhänvisning
+				x += 10
+				y += 30  ; Add a few pixles to the top left position of the control, to find a spot inside the first combo box.
+				;Sleep 20
+				Click, %x% %y%
+				
+				y += 30 ; Gå ned ytterligare några pixlar till det översta valet i dropdownlistan (ArkivDigital) som nu bör vara utfällt och klicka där. Välj ArkivDigital.
+				;Sleep 20
+				Click, %x% %y%
+				
+				y -= 30 ; Gå åter upp till samma nivå och åt höger till textfältet för AID
+				x += 150 ; och åt höger till textfältet för AID och klicka där för att kunna föra in AID.
+				
+				Click, %x% %y%
+				
+				;Sleep 20
+				ControlSetDisDate(aid1) ; Funktionen jag använde för att skcika in datum siffra för siffra fungerade! Orkar inte leta vidare efter bättre alternativ.
+				
+				; ControlGetPos, x, y, w, h, TBitBtn11, Egenskaper för källhänvisning; Hitta OK-knappen
+				;Sleep 20
+				ControlFocus, TBitBtn11, Egenskaper för källhänvisning; Sätt fokus till en annnan kontroll, så att den inte fastnar inne i griddens subkontroll... Går inte att trycka enter där.
+			}
+		}
+		
+		; I Disgen < 2021 heter comboboxen för typ av källa  TComboBox1. I ver 2021 är det combo för kvalitet s har samma namn (efters. de tagit bort dropdownboxen typ av källa, och lagt in den i en svårhanterad grid).
+		; Detta anrop måste göras innan AID kan skickas in till tillhhörande textbox (i Disgen äldre än 2021).
+		ControlGet, OutputVar, Choice, , TComboBox1 ; Leta upp dropdownlistan TComboBox1 och returnera en referens till den i OutPutVar. Disgen äldre än ver 2021.
+		if ErrorLevel = 0
+		{
+			if (OutputVar <> "ArkivDigital")
+				ControlSend, TComboBox1, {PGUP}{DOWN}, Egenskaper för källhänvisning ; Ställ valet "Koppla till" på andra valet i listan (Arkiv Digital)
+				ControlSetText, TEdit1, %aid1%, Egenskaper för källhänvisning	; Bild-Id (Arkiv digitals AID)
+		}
+		
 		; Citat
-		ControlGetText, OutputVar, TDisMemo2, ahk_class TSourceRefPropDlg
+		ControlGetText, OutputVar, TDisMemo2, Egenskaper för källhänvisning
 		if (refQuote <> "")
-			ControlSetText, TDisMemo2, %refQuote%, ahk_class TSourceRefPropDlg	; Citat. Lägg inte in tomt citat, d.v.s. töm aldrig.
-		ControlSetText, TDisMemo1, %sourceLine%, ahk_class TSourceRefPropDlg	; Anteckningar
+			ControlSetText, TDisMemo2, %refQuote%, Egenskaper för källhänvisning	; Citat. Lägg inte in tomt citat, d.v.s. töm aldrig.
+		ControlSetText, TDisMemo1, %sourceLine%, Egenskaper för källhänvisning	; Anteckningar
 	}
 	; Leta efter Disgens ruta för källa, för att där kopiera in värdena vi extraherat.
-	IfWinExist, ahk_class TSourcePropDlg
+	IfWinExist, Egenskaper för källa
 	{
-		WinActivate, ahk_class TSourcePropDlg
-		ControlSetText, TEdit1, %sourceShortName%, ahk_class TSourcePropDlg ;Kort titel
-		; ControlSetText, TMemo1, %mainSource1%, ahk_class TSourcePropDlg ;Fullständig titel
-		; ControlSetText, TMemo3, Arkiv digital, ahk_class TSourcePropDlg ;Författare
-		ControlSetText, TMemo2, %sourceYears%, ahk_class TSourcePropDlg ;Publicering
+		WinActivate, Egenskaper för källa
+		ControlSetText, TEdit1, %sourceShortName%, Egenskaper för källa ;Kort titel
+		; ControlSetText, TMemo1, %mainSource1%, Egenskaper för källa ;Fullständig titel
+		; ControlSetText, TMemo3, Arkiv digital, Egenskaper för källa ;Författare
+		ControlSetText, TMemo2, %sourceYears%, Egenskaper för källa ;Publicering
 	}
-
+	Return
+	
 } else {
 	MsgBox, 64, Kopiera källa, Giltig källhänvisningstext saknas i urklippshanteraren.`r`n`r`nDetta AutoHotKey-skript är avsett för att kopiera och dela upp en källhänvisning från Arkiv Digital till en NY hällhänvisning i Disgen. Välj Kopiera källa i ArkivDigtal och tryck sedan åter på snabbkommandot för att aktivera detta skript.%HelpTextWithSample%
+	Return
 }
 
+
+; Formatera datum utan streck när man klistrar in dem med Ctrl+v i sökformuläret för Sv.Dödbok 7
+#If controlAndWindowActive("TEdit11,TEdit7,TEdit10", "Tsok_form")
+^v::
+if (Clipboard <> "" And controlAndWindowActive("TEdit11,TEdit7,TEdit10", "Tsok_form")){
+	focusedControl := 
+	curClipBoard := Clipboard
+	formattedDate := GetSwedishDateWithoutDashes(curClipBoard)
+	controlGetFocus, focusedControl, A
+	Control, EditPaste, %formattedDate%, %focusedControl%, A
+	Return
+}
+
+; Copy names and dates into the person window of Disgen
+#IfWinActive, ahk_class TPersonNotiser2 ; Pressing ctrl+k in "Ändra personnotiser", the main window of a person in Disgen 8.1.
+^k::
+if (Clipboard <> ""  ) {
+	personDataCopiedText := ; Reset the person data text variable
+	personDataCopiedText := Clipboard ; Using the current text contents of the clipboard as source
+	if (personDataCopiedText <> "")
+	{
+		; msgBox, %personDataCopiedText%
+		birthDate := ""
+		deathDate := ""
+		nameLast := ""
+		nameLast1 := ""
+		nameFirst := ""
+		arkivDigitalDataFound := false
+		
+		; Av oklar anledning byter Disgen namn på Födelsedatuminmatningskotrollen från TDisFullDate2 till TDisFullDate3, när man går in på fliken för begravningsdatum.
+		; För att säkerställa att födelsedatum alltid heter TDisFullDate3, låter vi skriptet aktivera tabben för begravningsdatum och sedan ställer vi tillbaka den på dödsdatum.
+		SendMessage, 0x1330, 1,, TPageControl2, ahk_class TPersonNotiser2  ; 0x1330 is TCM_SETCURFOCUS. Sätt fokus på flik index 1 (begravd).
+		SendMessage, 0x1330, 0,, TPageControl2, ahk_class TPersonNotiser2  ; 0x1330 is TCM_SETCURFOCUS. Sätt fokus på flik index 0 (död).
+
+		; ArkivDigital namn + tab + datum
+		; Get the birth date from the clipboard. First try using the pattern YYYY-MM-DD.
+		FoundPos := RegExMatch(personDataCopiedText, "\d\d\d\d-\d\d-\d\d", birthDate)
+		; Get the contents of the date control into the birthDateExisting variable, to be able to check against it before assigning new values. 
+		; Perhaps we don't want to set a new value when there is already a new one. Empty dates seem to contain ____-__-__ (and are not numeric)
+		ControlGetText, birthDateExisting, TDisFullDate3, ahk_class TPersonNotiser2
+		
+		if (birthDate <> "") {
+			arkivDigitalDataFound := true
+			;msgBox, "1" %birthDate%
+			;ControlSetText, TDisFullDate3, %birthDate%, ahk_class TPersonNotiser2	; Put birth date into the date box.
+		} else if (InStr(personDataCopiedText, "SDB7") > 0) {
+			; Data kopierade från Sveriges Dödbok
+			; msgBox, "Data kopierade från Sveriges Dödbok"
+			; Födelse YYYYMMDD, Efternamn och Förnamn från SvD-kopiering: (\d{8})-\d{4}\n\n^(.*), (.*)$
+			; Död \d{1,2}\/\d{1,2} \d\d\d\d
+			; Född \d{1,2}\/\d{1,2} \d\d\d\d
+			; Observera att personnumer kan förekomma med eller utan de fyra sista siffrorna. Vi tar höjd för det genom en non capturing group som får förekomma 0 eller en gång: (?:-\d{4})? 
+			FoundPos := RegExMatch(personDataCopiedText, "m`a)(\d{8})(?:-\d{3,4})?\r\n\r\n^(.*), (.*)$", SDBData)
+			
+			birthDate := SDBData1
+			nameLast1 := SDBData2 ; Assign the last name to the nameLast1 parameter, to be able to use the same assigment later on in the code, as when nameLast1 is slot 1 in an array, an automatically named variable, and found as a part of nameLast using a regex.
+			nameFirst := SDBData3
+			FoundPos := RegExMatch(personDataCopiedText, "Död (\d{1,2})\/(\d{1,2}) (\d\d\d\d)", deathDate)
+			
+			deathMonthFormatted := Format("{:02}", deathDate2)
+			deathDayFormatted := Format("{:02}", deathDate1)
+			; msgBox, Förnamn: %nameFirst% \r\n\ Efternamn: %nameLast1% %birthDate% till %deathDate3%-%deathMonthFormatted%-%deathDayFormatted%
+			
+		} else {
+			; Födelsedata från BSF-CD (Födde i Sjuhärad)
+			; Look for date with this pattern instead YYYYMMDD
+			FoundPos := RegExMatch(personDataCopiedText, "\d\d\d\d\d\d\d\d", birthDate)
+			; Om datumet saknar bindestreck innebär det att vi kan ha en post på följande format:
+			; Alma Eonia	18731003
+			; Det är förnamn kopierade från den vänstra listan i Sveriges Släktforskarförbunds Födde-CD utgivna av (t.ex?) Borås Släktforskare.
+			; When we deal with this kind of data there is no surname (and we won't get a match on the regex that tries to find it since there are no dashes in the date), so then we need to assign the whole string to the lastname variable.
+			nameLast := "dummy" ; Some contents is needed to avoid trying to find it in other ways below.
+		}
+		; msgBox, %birthDate%
+		
+		; Om vi har ett födelsedatum
+		if (birthDate > ""){
+			if (InStr(birthDate, "-") > 0){
+				; If the date already has dashes, use it as it is.
+				birthDateWithDashes := birthDate
+			} else {
+				; Lägg till bindestreck mellan tecknen i datumet (det kanske fungerar bättre så... än att krångla med andra tilldelninssätt)
+				birthDateWithDashes := regexreplace(birthDate, "^(.{4})(.{2})(.{2}).*$", "$1-$2-$3")
+			}
+			; The birthDateExisting is not numeric when it's empty (it's ____-__-__ then).
+			if (birthDateWithDashes <> "" AND NOT IsNumeric(SubStr(birthDateExisting, 1, 4))) {
+			
+				SendMessage, 0x1330, 0,, TPageControl3, ahk_class TPersonNotiser2  ; 0x1330 is TCM_SETCURFOCUS. Sätt fokus på flik index 0 (född).
+				
+				ControlSetText, TDisFullDate3, %birthDateWithDashes%, ahk_class TPersonNotiser2	; Put birth date into the date box.
+			}
+		}
+		
+		; Get any last name that is already in the Disgen interface textbox
+		ControlGetText, nameLastExisting, Edit2, ahk_class TPersonNotiser2
+		if (nameLastExisting <> "") {
+			nameLast1 := nameLastExisting
+		}
+		
+		if (nameLast = "" AND nameLast1 = ""){
+			; Om inte efternamn tilldelats redan, så försöker vi nedan att hantera texter som är kopierade från Arkiv Digitals HTML-gränssnitt Sveriges Befolkningsregister
+			; Om man kopierar en rad med namn + födelsedatum där, får man t.ex. " Jan Magnus Petersson Björlin 	1858-05-15" D.v.s. med tomma tecken runt och tab emellan.
+			; Ibland finns efternamn, men ibland inte (barnen saknar oftast)... problematiskt för då hamnar sista förnamnet som efternamn, men
+			; om man redan matat in efternamn (manuellt i Disgen) så används hela namnet som FÖRNAMN.
+			; (?:[a-zA-ZåäöÅÄÖéï:]*)?  Den inledande gruppen är noncapturing och gör att vi kräver att det finns minst ett namn FÖRE det som sen plockas ut som efternamn.
+			FoundPos := RegExMatch(personDataCopiedText, "(?:[a-zA-ZåäöÅÄÖéï:]*)? ([a-zA-ZåäöÅÄÖéï:]*)\s*\d\d\d\d-\d\d-\d\d", nameLast)
+			if (nameLast1 <> ""){
+				msgBox, Möjligt efternamn hittades (inget tecken mellan namnen som kan avgöra säkert):`n"%nameLast1%" och kommer att klistras in som efternamn på denna person.`n`nOm efternamn SAKNAS i den kopierade texten (d.v.s. om ett förnamnen hamnar i efternamnsrutan, se då till att MANUELLT skriva in efternamnet FÖRST (eller välja det med nedåtpil)!
+			}
+		}
+		
+		; Kontrollera om det redan finns ett efternamn inmatat (gör isåfall inget).
+		if (nameLastExisting = ""){
+			if (nameLast1 <> "") {
+				ControlSetText, Edit2, %nameLast1%, ahk_class TPersonNotiser2	; Put the surname into the textbox Efternamn.
+			}
+		}
+		
+		; Kontrollera om det redan finns ett förnamn inmatat på personen (gör isåfall inget).
+		ControlGetText, nameFirstExisting, TEdit1, ahk_class TPersonNotiser2
+		if (nameFirstExisting = ""){
+			if (nameFirst = ""){
+				; Ta bort datum och efternamn från originalsträngen om vi inte redan har tilldelat variabeln ett förnamn.
+				; Det som är kvar bör vara förnamnen. (Det var svårt att skriva ett regex som på egen hand plocka ut just förnamnen när kommatecken saknas, enklare genom denna replace.)
+				nameFirst := StrReplace(personDataCopiedText, nameLast1, "", OutputVarCount, Limit := -1)
+				nameFirst := StrReplace(nameFirst, birthDate, "", OutputVarCount, Limit := -1)
+				; Trim. Ta bort inledande och avslutande tomma tecken (Tab, Space etc).
+				nameFirst := regexreplace(nameFirst, "^\s+") ;trim beginning whitespace
+				nameFirst := regexreplace(nameFirst, "\s+$") ;trim ending whitespace
+			}
+			if (nameFirst <> "") {
+				ControlSetText, TEdit1, %nameFirst%, ahk_class TPersonNotiser2	; Put the firstname into the textbox Förnamn.
+			}
+		}
+		
+		; Lägg in Dödsdatum (om det hittats ovan i urklipp från Sveriges Dödbok)
+		if (deathDate <> ""){
+			
+			; First make sure the FIRST tab (index 0) of the död, begravning and cause of death tabset is selected.
+			SendMessage, 0x1330, 0,, TPageControl2, ahk_class TPersonNotiser2  ; 0x1330 is TCM_SETCURFOCUS. Sätt fokus på flik index 0 (död).
+			; Sleep 0  ; This line and the next are necessary only for certain tab controls. Vet ej om detta behövs.
+			; SendMessage, 0x130C, 0,, TPageControl2, ahk_class TPersonNotiser2  ; 0x130C is TCM_SETCURSEL.
+			
+			ControlSetText, TDisFullDate1, %deathDate3%-%deathMonthFormatted%-%deathDayFormatted%, ahk_class TPersonNotiser2	; Put birth date into the date box.
+		}
+		
+		; Sätt fokus till födelseort, så att man enkelt kan fortsätta med att trycka nedåtpil manuell (för senaste tidigare valet, om man vill välja samma som för föregående inmatad person)
+		ControlFocus, Edit15
+	}
+	Return
+}
 
 ControlSetDisDate(dateString) {
 	Loop, Parse, dateString
@@ -194,4 +420,46 @@ IsNumeric(x) {
   If x is number
     Return, 1
   Else Return, 0
+}
+
+; controlClassName är klassnamnet på kontrollen (t.ex. en textruta) som vi kräver att ska vara aktiv, för att denna funktion skall returnera true (1)
+; winClassName är klassnamnet på fönstret som vi kräver att det aktiva fönstret ska ha, för att denna funktion skall returnera true (1)
+controlAndWindowActive(controlClassNames, winClassName){
+	; returnValue := false
+	; Add comma as leading and trailing separator characters. This way we can send in comma separated string to check for multiple control names using a simple InStr check below.
+	controlClassNames := "," controlClassNames ","
+	focusedControl := 
+	; Default window name "A" meaning "The Active Window"
+    controlGetFocus, focusedControl, A
+	focusedControl := "," focusedControl ","
+	; msgBox %focusedControl%
+	; Plocka fram klassnamnet för Active window.
+	WinGetClass, winTest, A
+	; if (winTest = winClassName AND controlClassName=focusedControl){
+	if (winTest = winClassName AND InStr(controlClassNames, focusedControl) > 0){
+		; msgbox, %controlClassNames% %focusedControl% %winTest% %winClassName%
+		
+		; returnValue := true
+		return 1
+	}
+	;msgBox, %returnValue%
+	;return, 1
+}
+
+; Similar to the function above, but checks for all controls of a certain Kind such as AEdit (copied from the manual).
+ActiveControlIsOfClass(Class) {
+    ControlGetFocus, FocusedControl, A
+	; msgBox, %FocusedControl%
+    ControlGet, FocusedControlHwnd, Hwnd,, %FocusedControl%, A
+    WinGetClass, FocusedControlClass, ahk_id %FocusedControlHwnd%
+	chktest := FocusedControlClass=Class
+    return (FocusedControlClass=Class)
+}
+
+; theDate can be either YYYYMMDD or YYYY-MM-DD. The returned date will be formatted without dashes in either way.
+; All data (characters, white space, whatever) around the date will be removed.
+GetSwedishDateWithoutDashes(theDate){
+	;d := regexreplace(theDate, "(\d\d\d\d)(?:-)?(\d\d)(?:-)(\d\d)", "$1$2$3")
+	d := regexreplace(theDate, "\s*(\d\d\d\d)(?:-)?(\d\d)(?:-)(\d\d)\s*", "$1$2$3")
+	return, d
 }
