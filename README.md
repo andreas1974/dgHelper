@@ -12,7 +12,7 @@ Förberedelser
 =============
 För att kunna använda skriptet behöver du installera AutoHotKey på din dator. Välj "Download AutoHotkey Installer" och installera (ver. 1.1.x) från  https://autohotkey.com/. Läs gärna på om AutoHotKey på externa webbplatser, för att bilda er en egen uppfattning om programmet som "kör" automatiseringsskriptet!
 
-Ladda ner DgHelper.ahk från fillistan här på GitHub, starta sedan skriptet genom att dubbelklicka på det.
+Ladda ner DgHelper.ahk från fillistan här på GitHub [eller den gröna knappen], starta sedan skriptet genom att dubbelklicka på det.
 Lägg skriptet eller en genväg till det på ditt skrivbord för att ha snabb tillgång till det, eller schemalägg det så att det startar tillsammans med datorn om du alltid vill ha det igång. Att skriptet är igång märks inte på annat vis än att en grön fyrkantig ikon med ett vitt H visar sig i Windows Taskbar (längst nere till höger); det är vad som krävs för att snabbkommandot Ctrl+K nu ska utföra sitt jobb i Disgens fönster för källor, hänvisningar och ort.
 
 (Det finns även möjlighet att kompilera dgHelper till en fristående exe-fil, men jag avhåller mig från att distribuera en sådan, då jag vill att ni som använder skriptet ska kunna öppna källkoden och undersöka den. En okänd exe-fil kan göra vad som helst!)
@@ -88,4 +88,5 @@ Upphov / kontakt
 ================
 Andreas Jansson<br />
 Ön Tärby den 23/7 2017<br />
-Ni kan kontakta mig genom att skriva e-post: Sätt punkter mellan mina namn + snabel-a home punkt se eller leta upp mig på Dis Forum eller Facebook (t.ex. gruppen "Vi som gillar Disgen"). GitHub kanske också har kontakt-uppgifter.
+
+Det är nog lättast att få kontakt med mig genom att ni letar upp mig på Facebook (det finns inlägg om DGHelper i gruppen "Vi som gillar Disgen". Jag misstänker att jag även får en avisering om ni skriver något under Pull Requests här på GitHub. Jag har inte lyckats logga in på Dis Forum på ett tag – jag hade fått en fråga där om skriptet där beträffande Disgen 2021 tror jag, men inloggningen krånglade som sagt, och jag har inte fixat ny än (dec 2021).
