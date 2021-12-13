@@ -1,4 +1,4 @@
-; DgHelper ver 1.06
+; DgHelper ver 1.07
 ; Ett hjälpverktyg för Disgen 8.2. Det mesta ska fungera även i senare versioner av Disgen, dock troligen inte inklistringen av namn och datum i personvyn, eftersom det gränssnittet är mycket förändrat i senare versioner av Disgen.
 ; Ver 1.05 har stöd för Disgen 2021 (men för att nå in i rutan för att mata in AID DISGEN-länk) lät jag skriptet flytta muspekaren och utföra klick på positioner som stämmer på min dators upplösning. Det är ingen bra lösning, men fungerar förhoppningsvis för de flesta.
 ; Även småsaker som hjälper till i andra program: Vid inklistring i datumfälten i SverigesDödbok (med Ctrl+V) tas eventuella bindestreck bort från datumet i urklipp, så att det blir som programmet vill ha det.
@@ -228,9 +228,10 @@ if (FullSourceText <> "" AND InStr(FullSourceText, "AID:") )
 		ControlGet, OutputVar, Choice, , TComboBox1 ; Leta upp dropdownlistan TComboBox1 och returnera en referens till den i OutPutVar. Disgen äldre än ver 2021.
 		if ErrorLevel = 0
 		{
-			if (OutputVar <> "ArkivDigital")
+			if (OutputVar <> "ArkivDigital"){
 				ControlSend, TComboBox1, {PGUP}{DOWN}, Egenskaper för källhänvisning ; Ställ valet "Koppla till" på andra valet i listan (Arkiv Digital)
-				
+				ControlSetText, TEdit1, %aid1%, ahk_class TSourceRefPropDlg	; Bild-Id (Arkiv digitals AID)
+			}
 		}
 		
 		; Citat
